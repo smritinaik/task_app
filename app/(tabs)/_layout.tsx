@@ -1,49 +1,120 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { View } from 'react-native';
+
+const COLORS = {
+  cream: '#F8F5EF',
+  card: '#fbe2e2',
+  pink: '#e28087',
+  pinkLight: '#F7D7DA',
+  green: '#4E6B50',
+};
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+
+        tabBarActiveTintColor: COLORS.pink,
+        tabBarInactiveTintColor: COLORS.green,
+
+        tabBarStyle: {
+          position: 'absolute',
+          left: 20,
+          right: 20,
+          bottom: 22,
+
+          height: 75,
+
+          borderRadius: 40,
+          backgroundColor: COLORS.card,
+
+          borderTopWidth: 0,
+
+          shadowColor: '#000',
+          shadowOpacity: 0.08,
+          shadowRadius: 20,
+          shadowOffset: {
+            width: 0,
+            height: 10,
+          },
+
+          elevation: 10,
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginBottom: 6,
+        },
       }}
     >
+      {/* HOME */}
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Calendar',
-          tabBarIcon: ({ color, size }) => (
+          title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name="calendar"
-              size={size}
+              name={focused ? 'home' : 'home-outline'}
+              size={24}
               color={color}
             />
           ),
         }}
       />
 
+      {/* ADD TASK */}
       <Tabs.Screen
-        name="tasks"
+        name="addtask"
         options={{
-          title: 'Tasks',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="list"
-              size={size}
-              color={color}
-            />
+          title: '',
+
+          tabBarIcon: () => (
+            <View
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+
+                backgroundColor: COLORS.pink,
+
+                justifyContent: 'center',
+                alignItems: 'center',
+
+                marginBottom: 30,
+
+                shadowColor: '#000',
+                shadowOpacity: 0.15,
+                shadowRadius: 8,
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+
+                elevation: 8,
+              }}
+            >
+              <Ionicons
+                name="add"
+                size={34}
+                color="#FFFFFF"
+              />
+            </View>
           ),
         }}
       />
 
+      {/* PROGRESS */}
       <Tabs.Screen
         name="progress"
         options={{
           title: 'Progress',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name="bar-chart"
-              size={size}
+              name={focused ? 'bar-chart' : 'bar-chart-outline'}
+              size={24}
               color={color}
             />
           ),
