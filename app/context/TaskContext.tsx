@@ -14,17 +14,27 @@ export interface Task {
   description: string;
   priority: Priority;
   completed: boolean;
+
+  // Image Support
+  imageUri?: string | null;
 }
 
 interface TaskContextType {
   tasks: Task[];
+
   addTask: (task: Task) => void;
+
   updateTask: (task: Task) => void;
+
   deleteTask: (id: string) => void;
+
   toggleTask: (id: string) => void;
 }
 
-const TaskContext = createContext<TaskContextType | null>(null);
+const TaskContext =
+  createContext<TaskContextType | null>(
+    null
+  );
 
 export function TaskProvider({
   children,
@@ -38,17 +48,38 @@ export function TaskProvider({
   }, []);
 
   useEffect(() => {
-    AsyncStorage.setItem(
-      'TASKS',
-      JSON.stringify(tasks)
-    );
+    saveTasks();
   }, [tasks]);
 
-  const loadTasks = async () => {
-    const data = await AsyncStorage.getItem('TASKS');
+  const saveTasks = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'TASKS',
+        JSON.stringify(tasks)
+      );
+    } catch (error) {
+      console.log(
+        'Error saving tasks:',
+        error
+      );
+    }
+  };
 
-    if (data) {
-      setTasks(JSON.parse(data));
+  const loadTasks = async () => {
+    try {
+      const data =
+        await AsyncStorage.getItem(
+          'TASKS'
+        );
+
+      if (data) {
+        setTasks(JSON.parse(data));
+      }
+    } catch (error) {
+      console.log(
+        'Error loading tasks:',
+        error
+      );
     }
   };
 
@@ -56,7 +87,9 @@ export function TaskProvider({
     setTasks(prev => [...prev, task]);
   };
 
-  const updateTask = (updatedTask: Task) => {
+  const updateTask = (
+    updatedTask: Task
+  ) => {
     setTasks(prev =>
       prev.map(task =>
         task.id === updatedTask.id
@@ -68,7 +101,9 @@ export function TaskProvider({
 
   const deleteTask = (id: string) => {
     setTasks(prev =>
-      prev.filter(task => task.id !== id)
+      prev.filter(
+        task => task.id !== id
+      )
     );
   };
 
@@ -78,7 +113,8 @@ export function TaskProvider({
         task.id === id
           ? {
               ...task,
-              completed: !task.completed,
+              completed:
+                !task.completed,
             }
           : task
       )
@@ -101,11 +137,12 @@ export function TaskProvider({
 }
 
 export const useTasks = () => {
-  const context = useContext(TaskContext);
+  const context =
+    useContext(TaskContext);
 
   if (!context) {
     throw new Error(
-      'useTasks must be inside TaskProvider'
+      'useTasks must be used inside TaskProvider'
     );
   }
 

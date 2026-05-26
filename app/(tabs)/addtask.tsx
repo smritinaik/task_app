@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,31 +8,22 @@ import {
   Alert,
 } from 'react-native';
 
-import {
-  useState,
-  useEffect,
-} from 'react';
-
-import {
-  router,
-  useLocalSearchParams,
-} from 'expo-router';
-
-import {
-  useTasks,
-  Priority,
-} from '../context/TaskContext';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useTasks, Priority } from '../context/TaskContext';
 
 const COLORS = {
-  background: '#FFF8F6',
+  background: '#0A0A0A',
+  surface: '#141414',
+  border: '#1F1F1F',
 
-  high: '#FF8A8A',
-  medium: '#8FC6FF',
-  low: '#FFE28A',
+  textMain: '#FFFFFF',
+  textMuted: '#8E8E93',
 
-  dark: '#2F2F2F',
+  pinkAccent: '#E28087',
 
-  white: '#FFFFFF',
+  high: '#FF5C5C',
+  medium: '#5C9DFF',
+  low: '#E6C64F',
 };
 
 export default function AddTaskScreen() {
@@ -41,8 +33,7 @@ export default function AddTaskScreen() {
     updateTask,
   } = useTasks();
 
-  const { taskId } =
-    useLocalSearchParams();
+  const { taskId } = useLocalSearchParams();
 
   const [title, setTitle] =
     useState('');
@@ -53,10 +44,7 @@ export default function AddTaskScreen() {
   const [priority, setPriority] =
     useState<Priority>('MEDIUM');
 
-
-
   useEffect(() => {
-    // New task → clear form
     if (!taskId) {
       setTitle('');
       setDescription('');
@@ -64,7 +52,6 @@ export default function AddTaskScreen() {
       return;
     }
 
-    // Edit existing task
     const task = tasks.find(
       item => item.id === taskId
     );
@@ -75,7 +62,6 @@ export default function AddTaskScreen() {
       setPriority(task.priority);
     }
   }, [taskId, tasks]);
-
 
   const handleSave = () => {
     if (!title.trim()) {
@@ -115,10 +101,10 @@ export default function AddTaskScreen() {
     }
 
     setTitle('');
-setDescription('');
-setPriority('MEDIUM');
+    setDescription('');
+    setPriority('MEDIUM');
 
-router.replace('/');
+    router.replace('/');
   };
 
   return (
@@ -136,6 +122,9 @@ router.replace('/');
       <TextInput
         style={styles.input}
         placeholder="Enter task title"
+        placeholderTextColor={
+          COLORS.textMuted
+        }
         value={title}
         onChangeText={setTitle}
       />
@@ -147,6 +136,9 @@ router.replace('/');
       <TextInput
         style={styles.description}
         placeholder="Enter description"
+        placeholderTextColor={
+          COLORS.textMuted
+        }
         value={description}
         onChangeText={setDescription}
         multiline
@@ -160,7 +152,9 @@ router.replace('/');
         <PriorityButton
           label="HIGH"
           color={COLORS.high}
-          active={priority === 'HIGH'}
+          active={
+            priority === 'HIGH'
+          }
           onPress={() =>
             setPriority('HIGH')
           }
@@ -169,7 +163,9 @@ router.replace('/');
         <PriorityButton
           label="MEDIUM"
           color={COLORS.medium}
-          active={priority === 'MEDIUM'}
+          active={
+            priority === 'MEDIUM'
+          }
           onPress={() =>
             setPriority('MEDIUM')
           }
@@ -178,7 +174,9 @@ router.replace('/');
         <PriorityButton
           label="LOW"
           color={COLORS.low}
-          active={priority === 'LOW'}
+          active={
+            priority === 'LOW'
+          }
           onPress={() =>
             setPriority('LOW')
           }
@@ -213,7 +211,8 @@ function PriorityButton({
         {
           backgroundColor: active
             ? color
-            : '#fff',
+            : COLORS.surface,
+
           borderColor: color,
         },
       ]}
@@ -221,6 +220,9 @@ function PriorityButton({
       <Text
         style={{
           fontWeight: '700',
+          color: active
+            ? '#FFFFFF'
+            : COLORS.textMuted,
         }}
       >
         {label}
@@ -232,43 +234,78 @@ function PriorityButton({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor:
+      COLORS.background,
     padding: 24,
   },
 
   heading: {
     fontSize: 30,
     fontWeight: '800',
-    color: COLORS.dark,
+    color: COLORS.textMain,
     marginTop: 50,
     marginBottom: 30,
+    letterSpacing: -0.5,
   },
 
   label: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 13,
+    fontWeight: '700',
+    color: COLORS.textMuted,
     marginBottom: 8,
     marginTop: 18,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
   },
 
   input: {
-    backgroundColor: COLORS.white,
+    backgroundColor:
+      COLORS.surface,
+
+    borderColor:
+      COLORS.border,
+
+    borderWidth: 1,
+
     borderRadius: 16,
+
     paddingHorizontal: 16,
+
     height: 55,
+
+    fontSize: 15,
+    fontWeight: '600',
+
+    color: COLORS.textMain,
   },
 
   description: {
-    backgroundColor: COLORS.white,
+    backgroundColor:
+      COLORS.surface,
+
+    borderColor:
+      COLORS.border,
+
+    borderWidth: 1,
+
     borderRadius: 16,
+
     padding: 16,
+
     height: 140,
+
     textAlignVertical: 'top',
+
+    fontSize: 15,
+    fontWeight: '600',
+
+    color: COLORS.textMain,
   },
 
   priorityRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent:
+      'space-between',
     marginTop: 10,
   },
 
@@ -276,22 +313,41 @@ const styles = StyleSheet.create({
     width: '31%',
     paddingVertical: 14,
     borderRadius: 18,
-    borderWidth: 2,
+    borderWidth: 1.5,
     alignItems: 'center',
   },
 
   saveButton: {
     marginTop: 40,
-    backgroundColor: '#E89A9F',
+
+    backgroundColor:
+      COLORS.pinkAccent,
+
     height: 58,
+
     borderRadius: 18,
+
     justifyContent: 'center',
     alignItems: 'center',
+
+    shadowColor:
+      COLORS.pinkAccent,
+
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+
+    elevation: 2,
   },
 
   saveText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontWeight: '800',
     fontSize: 16,
+    letterSpacing: 0.5,
   },
 });
