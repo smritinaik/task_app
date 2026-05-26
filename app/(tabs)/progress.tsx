@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
+  Animated,
+  Easing,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTasks } from '../context/TaskContext';
@@ -27,25 +29,38 @@ const PRIORITY_COLORS = {
 export default function ProgressScreen() {
   const { tasks } = useTasks();
 
-  const totalTasks = tasks.length;
-  const completedTasks = tasks.filter(task => task.completed).length;
+  // 1. Safe Metric Calculations
+  const totalTasks = tasks?.length || 0;
+  const completedTasks = tasks?.filter(task => task.completed).length || 0;
   const progress = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
-  // Fallback filtering to capture any task missing an explicit valid priority tag
-  const highLeft = tasks.filter(task => task.priority === 'HIGH' && !task.completed).length;
-  const lowLeft = tasks.filter(task => task.priority === 'LOW' && !task.completed).length;
+  // 2. Priority Filtering Fallbacks
+  const highLeft = tasks?.filter(task => task.priority === 'HIGH' && !task.completed).length || 0;
+  const lowLeft = tasks?.filter(task => task.priority === 'LOW' && !task.completed).length || 0;
   
-  // Medium acts as the safe default collector for unassigned tasks
-  const mediumLeft = tasks.filter(task => {
+  const mediumLeft = tasks?.filter(task => {
     const isUncompleted = !task.completed;
     const isMediumOrMissing = task.priority === 'MEDIUM' || (!task.priority || (task.priority !== 'HIGH' && task.priority !== 'LOW'));
     return isUncompleted && isMediumOrMissing;
-  }).length;
+  }).length || 0;
 
-  // Inline styling for the native circular layout mask engine
-  const dynamicConicExpress = {
-    backgroundImage: `conic-gradient(${COLORS.pink} 0% ${progress}%, ${COLORS.border} ${progress}% 100%)`
-  };
+  // 3. Animation Configuration
+  const animatedProgress = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animatedProgress, {
+      toValue: progress,
+      duration: 800, // Quick, snappy transition
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: false, // Must be false to animate layout width properties directly
+    }).start();
+  }, [progress]);
+
+  // Interpolating percentage numbers securely into a clean layout width string
+  const fillWidth = animatedProgress.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'],
+  });
 
   return (
     <View style={styles.mainWrapper}>
@@ -68,18 +83,19 @@ export default function ProgressScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Progress Card */}
-        <View style={styles.circleCard}>
-          
-          {/* HIGH-PERFORMANCE PIXEL-PERFECT ACCURATE GRADIENT RING */}
-          <View style={[styles.pureChartContainer, dynamicConicExpress]}>
-            {/* Center Mask Content Hole - Leaves a crisp outer track */}
-            <View style={styles.innerMaskCoreCard}>
-              <Text style={styles.percent}>{progress}%</Text>
-            </View>
+        {/* Cute Progress Card */}
+        <View style={styles.progressCard}>
+          <View style={styles.progressHeaderRow}>
+            <Text style={styles.progressText}>Overall Completion</Text>
+            <Text style={styles.percentText}>{progress}%</Text>
           </View>
 
-          <Text style={styles.progressText}>Overall Completion</Text>
+          {/* Progress Track Background */}
+          <View style={styles.progressBarTrack}>
+            {/* Animated Progress Fill */}
+            <Animated.View style={[styles.progressBarFill, { width: fillWidth }]} />
+          </View>
+
           <Text style={styles.subText}>
             {completedTasks} of {totalTasks} tasks completed
           </Text>
@@ -176,11 +192,10 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingBottom: 140, 
   },
-  circleCard: {
+  progressCard: {
     backgroundColor: COLORS.surface,
     borderRadius: 24,
     padding: 24,
-    alignItems: 'center',
     borderWidth: 1,
     borderColor: COLORS.border,
     shadowColor: '#000000',
@@ -190,40 +205,38 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginBottom: 10,
   },
-  pureChartContainer: {
-    width: 140,
-    height: 140,
-    borderRadius: 70, 
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 8,
-    position: 'relative',
-  },
-  innerMaskCoreCard: {
-    width: 120, 
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: COLORS.surface,
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  percent: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: COLORS.textMain,
-    letterSpacing: -0.5,
+  progressHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    marginBottom: 16,
   },
   progressText: {
     fontSize: 16,
     fontWeight: '700',
     color: COLORS.textMain,
-    marginTop: 18,
+  },
+  percentText: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: COLORS.pink,
+  },
+  progressBarTrack: {
+    height: 12,
+    backgroundColor: COLORS.border,
+    borderRadius: 6,
+    width: '100%',
+    overflow: 'hidden',
+    marginBottom: 14,
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: COLORS.pink,
+    borderRadius: 6,
   },
   subText: {
     fontSize: 13,
     color: COLORS.textMuted,
-    marginTop: 4,
   },
   sectionTitle: {
     fontSize: 11,
