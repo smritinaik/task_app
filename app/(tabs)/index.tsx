@@ -12,21 +12,21 @@ import { router } from 'expo-router';
 
 // Premium Deep Dark Mode Palette
 const COLORS = {
-  background: '#0A0A0A',     
-  surface: '#141414',        
+  background: '#0A0A0A',
+  surface: '#141414',
   surfaceElevated: '#1D1D1D',
-  pink: '#e28087',           
-  pinkDim: 'rgba(226, 128, 135, 0.15)', 
-  green: '#7FA381',          
-  textMain: '#FFFFFF',       
-  textMuted: '#8E8E93',      
-  border: '#1F1F1F',         
+  pink: '#e28087',
+  pinkDim: 'rgba(226, 128, 135, 0.15)',
+  green: '#7FA381',
+  textMain: '#FFFFFF',
+  textMuted: '#8E8E93',
+  border: '#1F1F1F',
 };
 
 const PRIORITY_COLORS = {
-  high: '#FF5C5C',   
-  medium: '#5C9DFF', 
-  low: '#E6C64F',    
+  high: '#FF5C5C',
+  medium: '#5C9DFF',
+  low: '#E6C64F',
 };
 
 type FilterType = 'ALL' | 'PENDING' | 'COMPLETED';
@@ -54,10 +54,28 @@ export default function HomeScreen() {
   });
 
   const renderTask = (task: any, priorityColor: string) => (
-    <View key={task.id} style={[styles.card, task.completed && styles.completedCard]}>
+    <TouchableOpacity
+      key={task.id}
+      activeOpacity={0.8}
+      onPress={() =>
+        router.push({
+          pathname: '/taskdetails',
+          params: {
+            taskId: task.id,
+          },
+        })
+      }
+      style={[
+        styles.card,
+        task.completed &&
+        styles.completedCard,
+      ]}
+    >
+
+
       <View style={[styles.priorityIndicator, { backgroundColor: priorityColor }]} />
 
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => toggleTask(task.id)}
         style={styles.checkboxContainer}
       >
@@ -69,9 +87,9 @@ export default function HomeScreen() {
       </TouchableOpacity>
 
       <View style={styles.textContainer}>
-        <Text 
+        <Text
           style={[
-            styles.taskTitle, 
+            styles.taskTitle,
             task.completed && styles.completedText
           ]}
         >
@@ -79,9 +97,9 @@ export default function HomeScreen() {
         </Text>
 
         {task.description ? (
-          <Text 
+          <Text
             style={[
-              styles.taskDesc, 
+              styles.taskDesc,
               task.completed && styles.completedText
             ]}
             numberOfLines={2}
@@ -95,7 +113,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           style={styles.iconButton}
           onPress={() =>
-            router.push({
+            router.navigate({
               pathname: '/addtask',
               params: { taskId: task.id },
             })
@@ -107,7 +125,7 @@ export default function HomeScreen() {
             color={COLORS.pink}
           />
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           style={styles.iconButton}
           onPress={() => deleteTask(task.id)}
@@ -119,8 +137,7 @@ export default function HomeScreen() {
           />
         </TouchableOpacity>
       </View>
-    </View>
-  );
+    </TouchableOpacity>);
 
   return (
     <View style={styles.mainWrapper}>
@@ -141,21 +158,21 @@ export default function HomeScreen() {
 
       {/* Interactive, High-Contrast Filter Chips */}
       <View style={styles.dateStripContainer}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.dateStripPill, activeFilter === 'ALL' && styles.activeDatePill]}
           onPress={() => setActiveFilter('ALL')}
         >
           <Text style={activeFilter === 'ALL' ? styles.activeDateText : styles.inactiveDateText}> All </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.dateStripPill, activeFilter === 'PENDING' && styles.activeDatePill]}
           onPress={() => setActiveFilter('PENDING')}
         >
           <Text style={activeFilter === 'PENDING' ? styles.activeDateText : styles.inactiveDateText}> Pending </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.dateStripPill, activeFilter === 'COMPLETED' && styles.activeDatePill]}
           onPress={() => setActiveFilter('COMPLETED')}
         >
@@ -196,10 +213,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   mainWrapper: {
     flex: 1,
-    backgroundColor: COLORS.background, 
+    backgroundColor: COLORS.background,
   },
   appHeader: {
-    backgroundColor: COLORS.pink, 
+    backgroundColor: COLORS.pink,
     paddingHorizontal: 24,
     paddingTop: 65,
     paddingBottom: 35,
@@ -214,17 +231,17 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#FFFFFF', 
+    color: '#FFFFFF',
     letterSpacing: -0.5,
   },
   subHeading: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.85)', 
+    color: 'rgba(255, 255, 255, 0.85)',
     marginTop: 4,
     fontWeight: '500',
   },
   datePill: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)', 
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 20,
@@ -270,7 +287,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 24,
     paddingTop: 10,
-    paddingBottom: 140, 
+    paddingBottom: 140,
   },
   section: {
     fontSize: 12,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,13 @@ import {
   Alert,
 } from 'react-native';
 
-import { router, useLocalSearchParams } from 'expo-router';
+import {
+  router,
+  useLocalSearchParams,
+  useFocusEffect,
+} from 'expo-router';
+
+import { useCallback } from 'react';
 import { useTasks, Priority } from '../context/TaskContext';
 
 const COLORS = {
@@ -44,68 +50,89 @@ export default function AddTaskScreen() {
   const [priority, setPriority] =
     useState<Priority>('MEDIUM');
 
-  useEffect(() => {
-    if (!taskId) {
-      setTitle('');
-      setDescription('');
-      setPriority('MEDIUM');
-      return;
-    }
 
-    const task = tasks.find(
-      item => item.id === taskId
-    );
+useFocusEffect(
+  useCallback(() => {
+    const task =
+      typeof taskId === 'string'
+        ? tasks.find(
+            item => item.id === taskId
+          )
+        : null;
 
     if (task) {
+      // EDIT MODE
       setTitle(task.title);
       setDescription(task.description);
       setPriority(task.priority);
-    }
-  }, [taskId, tasks]);
-
-  const handleSave = () => {
-    if (!title.trim()) {
-      Alert.alert(
-        'Missing Title',
-        'Please enter a task title'
-      );
-      return;
-    }
-
-    if (taskId) {
-      updateTask({
-        id: taskId as string,
-        title,
-        description,
-        priority,
-        completed: false,
-      });
-
-      Alert.alert(
-        'Success',
-        'Task updated'
-      );
     } else {
-      addTask({
-        id: Date.now().toString(),
-        title,
-        description,
-        priority,
-        completed: false,
-      });
-
-      Alert.alert(
-        'Success',
-        'Task saved'
-      );
+      // ADD MODE
+      setTitle('');
+      setDescription('');
+      setPriority('MEDIUM');
     }
+  }, [taskId, tasks])
+);
 
-    setTitle('');
-    setDescription('');
-    setPriority('MEDIUM');
 
-    router.replace('/');
-  };
+
+
+const handleSave = () => {
+  if (!title.trim()) {
+    Alert.alert(
+      'Missing Title',
+      'Please enter a task title'
+    );
+    return;
+  }
+
+  if (taskId) {
+    const existingTask = tasks.find(
+      task => task.id === taskId
+    );
+
+    updateTask({
+      id: taskId as string,
+      title,
+      description,
+      priority,
+
+      // preserve existing values
+      completed:
+        existingTask?.completed ?? false,
+
+      imageUri:
+        existingTask?.imageUri ?? null,
+    });
+
+    Alert.alert(
+      'Success',
+      'Task updated'
+    );
+  } else {
+    addTask({
+      id: Date.now().toString(),
+      title,
+      description,
+      priority,
+      completed: false,
+      imageUri: null,
+    });
+
+    Alert.alert(
+      'Success',
+      'Task saved'
+    );
+  }
+
+  // Clear form
+  setTitle('');
+  setDescription('');
+  setPriority('MEDIUM');
+
+  // Go back to Home
+  router.navigate('/');
+};
 
   return (
     <View style={styles.container}>

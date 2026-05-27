@@ -1,6 +1,9 @@
-import { Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { View } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+} from 'react-native';
 
 const COLORS = {
   cream: '#F8F5EF',
@@ -16,8 +19,11 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
 
-        tabBarActiveTintColor: COLORS.pink,
-        tabBarInactiveTintColor: COLORS.green,
+        tabBarActiveTintColor:
+          COLORS.pink,
+
+        tabBarInactiveTintColor:
+          COLORS.green,
 
         tabBarStyle: {
           position: 'absolute',
@@ -28,7 +34,8 @@ export default function TabLayout() {
           height: 75,
 
           borderRadius: 40,
-          backgroundColor: COLORS.card,
+          backgroundColor:
+            COLORS.card,
 
           borderTopWidth: 0,
 
@@ -55,9 +62,17 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
+
+          tabBarIcon: ({
+            color,
+            focused,
+          }) => (
             <Ionicons
-              name={focused ? 'home' : 'home-outline'}
+              name={
+                focused
+                  ? 'home'
+                  : 'home-outline'
+              }
               size={24}
               color={color}
             />
@@ -71,37 +86,56 @@ export default function TabLayout() {
         options={{
           title: '',
 
-          tabBarIcon: () => (
-            <View
+          tabBarButton: () => (
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() =>
+                router.push({
+                  pathname:
+                    '/addtask',
+                })
+              }
               style={{
-                width: 60,
-                height: 60,
-                borderRadius: 30,
-
-                backgroundColor: COLORS.pink,
-
-                justifyContent: 'center',
-                alignItems: 'center',
-
-                marginBottom: 30,
-
-                shadowColor: '#000',
-                shadowOpacity: 0.15,
-                shadowRadius: 8,
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-
-                elevation: 8,
+                justifyContent:
+                  'center',
+                alignItems:
+                  'center',
+                marginTop: -30,
               }}
             >
-              <Ionicons
-                name="add"
-                size={34}
-                color="#FFFFFF"
-              />
-            </View>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+
+                  backgroundColor:
+                    COLORS.pink,
+
+                  justifyContent:
+                    'center',
+
+                  alignItems:
+                    'center',
+
+                  shadowColor: '#000',
+                  shadowOpacity: 0.15,
+                  shadowRadius: 8,
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+
+                  elevation: 8,
+                }}
+              >
+                <Ionicons
+                  name="add"
+                  size={34}
+                  color="#FFFFFF"
+                />
+              </View>
+            </TouchableOpacity>
           ),
         }}
       />
@@ -111,9 +145,17 @@ export default function TabLayout() {
         name="progress"
         options={{
           title: 'Progress',
-          tabBarIcon: ({ color, focused }) => (
+
+          tabBarIcon: ({
+            color,
+            focused,
+          }) => (
             <Ionicons
-              name={focused ? 'bar-chart' : 'bar-chart-outline'}
+              name={
+                focused
+                  ? 'bar-chart'
+                  : 'bar-chart-outline'
+              }
               size={24}
               color={color}
             />
