@@ -55,9 +55,7 @@ The app helps users manage daily tasks efficiently with features like task creat
 
 * React Context API
 
-## Storage
 
-* AsyncStorage
 
 ## Icons
 
