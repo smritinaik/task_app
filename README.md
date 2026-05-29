@@ -1,56 +1,154 @@
-# Welcome to your Expo app 👋
+# 📝 TaskFlow — Modern Task Manager App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+TaskFlow is a beautifully designed and modern productivity app built using **React Native**, **Expo Router**, and **TypeScript**.
+The app helps users manage daily tasks efficiently with features like task creation, editing, filtering, completion tracking, and detailed task viewing — all wrapped inside a premium dark-themed UI.
 
-## Get started
+---
 
-1. Install dependencies
+# ✨ Features
 
-   ```bash
-   npm install
-   ```
+* ✅ Create Tasks
+* 📝 Edit Existing Tasks
+* 🗑 Delete Tasks
+* ✔ Mark Tasks as Completed
+* 📂 Filter Tasks
 
-2. Start the app
+  * All
+  * Pending
+  * Completed
+* 🚦 Priority Management
 
-   ```bash
-   npx expo start
-   ```
+  * High
+  * Medium
+  * Low
+* 📄 Dedicated Task Details Screen
+* 💾 Persistent Local Storage using AsyncStorage
+* 🌙 Premium Dark Theme UI
+* 📱 Smooth Mobile Experience
+* ⚡ Built with Expo Router Navigation
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+# 📸 Screens Included
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+* Home Screen
+* Add Task Screen
+* Edit Task Screen
+* Task Details Screen
+* Progress Screen
 
-## Get a fresh project
+---
 
-When you're ready, run:
+# 🛠 Tech Stack
+
+## Frontend
+
+* React Native
+* Expo
+* TypeScript
+
+## Navigation
+
+* Expo Router
+
+## State Management
+
+* React Context API
+
+
+
+## Icons
+
+* Expo Vector Icons (Ionicons)
+
+---
+
+# 📂 Folder Structure
 
 ```bash
-npm run reset-project
+app/
+│
+├── (tabs)/
+│   ├── index.tsx
+│   ├── addtask.tsx
+│   ├── progress.tsx
+│   └── _layout.tsx
+│
+├── taskdetails.tsx
+│
+context/
+│
+└── TaskContext.tsx
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+# 🚀 Getting Started
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## 1. Clone the Repository
 
-## Learn more
+```bash
+git clone https://github.com/smritinaik/taskflow-app.git
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 2. Install Dependencies
 
-## Join the community
+```bash
+npm install
+```
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 3. Start the Development Server
+
+```bash
+npx expo start
+```
+
+---
+
+# 📦 Build APK
+
+This project uses **EAS Build** for Android APK generation.
+
+```bash
+eas build --platform android --profile preview
+```
+
+---
+
+# 🎨 UI Design
+
+The application follows a clean modern dark aesthetic with:
+
+* Soft shadows
+* Rounded cards
+* Priority color indicators
+* Minimal navigation
+* Premium task interaction design
+
+---
+
+# 📈 Future Improvements
+
+* Task Deadlines
+* Notifications & Reminders
+* Calendar Integration
+* Drag & Drop Task Sorting
+* Cloud Sync
+* Authentication
+* Image Attachments
+* Search & Categories
+
+---
+
+# 👨‍💻 Developer
+
+Built with ❤️ using React Native & Expo.
+
+Created by Smriti.
+
+---
+
