@@ -1,4 +1,9 @@
-<p align="center"> <img src="./assets/banner.jpg" alt="TaskFlow Banner"/> </p> 
+```md id="wpk82h"
+<p align="center">
+  <img src="./assets/images/banner.jpg" alt="TaskFlow Banner"/>
+</p>
+```
+
 
 # 📝 TaskFlow — Modern Task Manager App
 
