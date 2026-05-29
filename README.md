@@ -1,5 +1,4 @@
-<p align="center"> <img src="./assets/banner.png" alt="TaskFlow Banner"/> </p> <h1 align="center">📝 TaskFlow — Modern Task Manager App</h1> <p align="center"> A modern productivity app built using React Native, Expo Router, and TypeScript. </p>
-
+<p align="center"> <img src="./assets/banner.jpg" alt="TaskFlow Banner"/> </p> 
 
 # 📝 TaskFlow — Modern Task Manager App
 
