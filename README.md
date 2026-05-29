@@ -1,3 +1,6 @@
+<p align="center"> <img src="./assets/banner.png" alt="TaskFlow Banner"/> </p> <h1 align="center">📝 TaskFlow — Modern Task Manager App</h1> <p align="center"> A modern productivity app built using React Native, Expo Router, and TypeScript. </p>
+
+
 # 📝 TaskFlow — Modern Task Manager App
 
 TaskFlow is a beautifully designed and modern productivity app built using **React Native**, **Expo Router**, and **TypeScript**.
